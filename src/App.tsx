@@ -2,29 +2,20 @@ import { Suspense } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
-import WikiDetail from './components/WikiDetail';
-import WikiDetailSkeleton from './components/WikiDetailSkeleton';
+import WikiLinksListItems from './components/WikiLinksListItems';
+import WikiLinksListItemsSkeleton from './components/WikiLinksListItemsSkeleton';
 
-const IDS = ['3051', '1211', '3137'];
+const ID = 'トマト||||';
 
-const App = () => {
-  return (
-    <Box sx={{ p: 1 }}>
-      <Typography variant="h3">
-        WikiLinks
-      </Typography>
-      {IDS.map(id => (
-        <Box
-          key={id}
-          sx={{ p: 1 }}
-        >
-          <Suspense fallback={<WikiDetailSkeleton />}>
-            <WikiDetail id={id} />
-          </Suspense>
-        </Box>
-      ))}
-    </Box>
-  );
-};
+const App = () => (
+  <Box sx={{ p: 1 }}>
+    <Typography variant="h3">
+      WikiLinks
+    </Typography>
+    <Suspense fallback={<WikiLinksListItemsSkeleton />}>
+      <WikiLinksListItems id={ID} />
+    </Suspense>
+  </Box>
+);
 
 export default App;
