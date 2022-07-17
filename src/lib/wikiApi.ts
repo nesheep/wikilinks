@@ -23,12 +23,10 @@ export const fetchWiki = async (id: string): Promise<Wiki> => {
 
   try {
     const res = await fetch(url);
-    if (!res.ok) {
-      throw new Error(`${res.status} ${res.statusText}`);
-    }
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
     const data = await res.json();
     const page = data.query.pages[id];
-    wiki.title = page.title ? page.title : '';
+    if (wiki.title) page.title = wiki.title;
     if (page.extract) wiki.extract = page.extract;
     if (page.original) wiki.image = page.original.source;
   } catch (error) {
