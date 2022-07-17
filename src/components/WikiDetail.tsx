@@ -13,9 +13,6 @@ const WikiDetail = ({ id }: WikiDetailProps) => {
 
   return (
     <Stack spacing={1}>
-      <Typography variant="h6">
-        {wiki.title}
-      </Typography>
       {wiki.image &&
         <Box>
           <img

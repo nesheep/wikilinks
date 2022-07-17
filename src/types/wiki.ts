@@ -4,3 +4,10 @@ export type Wiki = {
   extract?: string;
   image?: string;
 };
+
+export type WikiLinks = {
+  id: string;
+  title: string;
+  items: Wiki[];
+  next?: string;
+};
