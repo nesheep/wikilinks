@@ -10,12 +10,15 @@ const buildWikiUrl = (params: { [key: string]: string }): string => {
 };
 
 export const fetchWiki = async (id: string): Promise<Wiki> => {
+  const wiki: Wiki = { id: '', title: '' };
+
   const url = buildWikiUrl({
-    prop: 'extracts',
+    prop: ['extracts', 'pageimages'].join('|'),
     pageids: id,
     exsentences: '10',
     exintro: '1',
     explaintext: '1',
+    piprop: 'original',
   });
 
   try {
@@ -25,11 +28,12 @@ export const fetchWiki = async (id: string): Promise<Wiki> => {
     }
     const data = await res.json();
     const page = data.query.pages[id];
-    const title = page.title ? page.title : '';
-    const extract = page.extract ? page.extract : '';
-    return { id, title, extract };
+    wiki.title = page.title ? page.title : '';
+    if (page.extract) wiki.extract = page.extract;
+    if (page.original) wiki.image = page.original.source;
   } catch (error) {
     if (error instanceof Error) console.error(error.message);
-    return { id: '', title: '' };
   }
+
+  return wiki;
 };
