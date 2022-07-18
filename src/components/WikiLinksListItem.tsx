@@ -34,7 +34,7 @@ const WikiLinksListItem = ({ wiki }: WikiLinksListItemProps) => {
         </Box>
       }
     </Box>
-  )
+  );
 };
 
 export default WikiLinksListItem;
