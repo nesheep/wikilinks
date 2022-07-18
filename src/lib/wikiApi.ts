@@ -27,7 +27,7 @@ export const fetchWiki = async (id: string): Promise<Wiki> => {
 
     const data = await res.json();
     const page = data.query.pages[id];
-    if (wiki.title) page.title = wiki.title;
+    if (page.title) wiki.title = page.title;
     if (page.extract) wiki.extract = page.extract;
     if (page.original) wiki.image = page.original.source;
   } catch (error) {
