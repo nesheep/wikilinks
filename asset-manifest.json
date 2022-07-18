@@ -1,12 +1,12 @@
 {
   "files": {
     "main.css": "/wikilinks/static/css/main.4efb37a3.css",
-    "main.js": "/wikilinks/static/js/main.e555d249.js",
-    "static/js/27.9a663e41.chunk.js": "/wikilinks/static/js/27.9a663e41.chunk.js",
+    "main.js": "/wikilinks/static/js/main.b9166741.js",
+    "static/js/27.e3e5f929.chunk.js": "/wikilinks/static/js/27.e3e5f929.chunk.js",
     "index.html": "/wikilinks/index.html"
   },
   "entrypoints": [
     "static/css/main.4efb37a3.css",
-    "static/js/main.e555d249.js"
+    "static/js/main.b9166741.js"
   ]
 }
