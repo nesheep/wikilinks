@@ -62,7 +62,7 @@ export const fetchWikiLinks = async (id: string): Promise<WikiLinks> => {
     const pages = data.query.pages;
     Object.keys(pages).forEach(k => {
       const page = pages[k];
-      if (!page.missing) wikiLinks.items.push({ id: k, title: page.title });
+      if (Number(k) > 0) wikiLinks.items.push({ id: k, title: page.title });
     });
 
     if (data.continue) wikiLinks.next = data.continue.gplcontinue;

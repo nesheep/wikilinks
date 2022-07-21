@@ -4,6 +4,7 @@ import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import SearchIcon from '@mui/icons-material/Search';
 
+import WikiLinkButton from './WikiLinkButton';
 import useSearch from '../hooks/useSearch';
 
 const SearchBar = () => {
@@ -20,7 +21,7 @@ const SearchBar = () => {
   return (
     <Box sx={{
       py: 0.5,
-      px: 2,
+      px: 1,
       position: 'fixed',
       top: 0,
       right: 0,
@@ -31,6 +32,9 @@ const SearchBar = () => {
       display: 'flex',
       alignItems: 'center',
     }}>
+      <IconButton onClick={() => search(word)}>
+        <SearchIcon />
+      </IconButton>
       <InputBase
         placeholder="Search"
         value={word}
@@ -40,9 +44,7 @@ const SearchBar = () => {
         onCompositionEnd={() => setComposition(false)}
         sx={{ flex: 1 }}
       />
-      <IconButton onClick={() => search(word)}>
-        <SearchIcon />
-      </IconButton>
+      <WikiLinkButton title={word} />
     </Box>
   )
 };

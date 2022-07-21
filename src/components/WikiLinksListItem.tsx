@@ -7,6 +7,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import WikiDetail from './WikiDetail';
 import WikiDetailSkeleton from './WikiDetailSkeleton';
+import WikiLinkButton from './WikiLinkButton';
 import { Wiki } from '../types/wiki';
 
 export type WikiLinksListItemProps = {
@@ -18,22 +19,27 @@ const WikiLinksListItem = ({ wiki }: WikiLinksListItemProps) => {
 
   return (
     <Box>
-      <ButtonBase
-        onClick={() => setOpen(prev => !prev)}
-        sx={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'flex-start',
-          textAlign: 'start',
-        }}
-      >
-        <Box sx={{ p: 1 }}>
-          {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-        </Box>
-        <Typography variant="h6">
-          {wiki.title}
-        </Typography>
-      </ButtonBase>
+      <Box sx={{
+        width: '100%',
+        display: 'flex',
+      }}>
+        <ButtonBase
+          onClick={() => setOpen(prev => !prev)}
+          sx={{
+            flex: 1,
+            justifyContent: 'flex-start',
+            textAlign: 'start',
+          }}
+        >
+          <Box sx={{ p: 1 }}>
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </Box>
+          <Typography variant="h6">
+            {wiki.title}
+          </Typography>
+        </ButtonBase>
+        <WikiLinkButton title={wiki.title} />
+      </Box>
       {open &&
         <Box sx={{ pt: 1 }}>
           <Suspense fallback={<WikiDetailSkeleton />}>
