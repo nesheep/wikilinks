@@ -1,20 +1,19 @@
-import { Suspense } from 'react';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 
-import WikiLinksListItems from './components/WikiLinksListItems';
-import WikiLinksListItemsSkeleton from './components/WikiLinksListItemsSkeleton';
+import SearchBar from './components/SearchBar';
+import WikiLinksList from './components/WikiLinksList';
 
-const ID = 'トマト||||';
 
 const App = () => (
-  <Box sx={{ p: 1 }}>
-    <Typography variant="h3">
-      WikiLinks
-    </Typography>
-    <Suspense fallback={<WikiLinksListItemsSkeleton />}>
-      <WikiLinksListItems id={ID} />
-    </Suspense>
+  <Box>
+    <SearchBar />
+    <Box sx={{
+      pt: 7,
+      pb: 2,
+      px: 1,
+    }}>
+      <WikiLinksList />
+    </Box>
   </Box>
 );
 

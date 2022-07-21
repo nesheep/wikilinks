@@ -1,6 +1,7 @@
 export const ATOM = {
   WIKI: 'atom.wiki',
   WIKI_LINKS: 'atom.wikiLinks',
+  BROWSING_WL_IDS: 'atom.browsingWlIds',
 } as const;
 
 export const SELECTOR = {
