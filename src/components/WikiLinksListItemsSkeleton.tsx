@@ -3,7 +3,12 @@ import Stack from '@mui/material/Stack';
 
 const WikiLinksListItemsSkeleton = () => (
   <Stack spacing={1}>
-    {new Array<JSX.Element>(25).fill(<Skeleton variant="text" />)}
+    {new Array(25).fill(0).map((_, i) => (
+      <Skeleton
+        key={i}
+        variant="text"
+      />
+    ))}
   </Stack>
 );
 
