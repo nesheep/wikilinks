@@ -18,7 +18,7 @@ const WikiLinksListItem = ({ wiki }: WikiLinksListItemProps) => {
   const [open, setOpen] = useState(false);
 
   return (
-    <Box>
+    <Box sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }}>
       <Box sx={{
         width: '100%',
         display: 'flex',
@@ -26,6 +26,7 @@ const WikiLinksListItem = ({ wiki }: WikiLinksListItemProps) => {
         <ButtonBase
           onClick={() => setOpen(prev => !prev)}
           sx={{
+            pt: 0.5,
             flex: 1,
             justifyContent: 'flex-start',
             textAlign: 'start',
@@ -41,7 +42,11 @@ const WikiLinksListItem = ({ wiki }: WikiLinksListItemProps) => {
         <WikiLinkButton title={wiki.title} />
       </Box>
       {open &&
-        <Box sx={{ pt: 1 }}>
+        <Box sx={{
+          px: 1,
+          pt: 1,
+          pb: 1.5,
+        }}>
           <Suspense fallback={<WikiDetailSkeleton />}>
             <WikiDetail id={wiki.id} />
           </Suspense>

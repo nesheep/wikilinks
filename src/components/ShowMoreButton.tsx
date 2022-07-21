@@ -13,12 +13,12 @@ const ShowMoreButton = ({ id }: ShowMoreButtonProps) => {
 
   return (
     <Button
-      variant="contained"
+      variant="outlined"
       color='inherit'
       onClick={() => addBrowsingWlIds(wikiLinks)}
       sx={wikiLinks.next ? null : { display: 'none' }}
     >
-      show more
+      もっと見る
     </Button>
   );
 };

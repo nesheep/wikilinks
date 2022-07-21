@@ -36,7 +36,7 @@ const SearchBar = () => {
         <SearchIcon />
       </IconButton>
       <InputBase
-        placeholder="Search"
+        placeholder="検索"
         value={word}
         onChange={e => setWord(e.target.value)}
         onKeyDown={e => e.key === 'Enter' && !composition && search(word)}
