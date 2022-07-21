@@ -19,7 +19,7 @@ const WikiLinksListItems = ({ id }: WikiLinksListItemsProps) => {
         />
       ))}
     </Stack>
-  )
+  );
 };
 
 export default WikiLinksListItems;
