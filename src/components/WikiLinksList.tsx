@@ -21,7 +21,7 @@ const WikiLinksList = () => {
       {Boolean(browsingWlIds.length) &&
         <Suspense>
           <Box sx={{
-            mt: 1,
+            mt: 2,
             textAlign: 'center',
           }}>
             <ShowMoreButton id={browsingWlIds[browsingWlIds.length - 1]} />
