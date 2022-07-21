@@ -1,6 +1,6 @@
 import { Suspense, useState } from 'react';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
+import ButtonBase from '@mui/material/ButtonBase';
 import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -18,16 +18,24 @@ const WikiLinksListItem = ({ wiki }: WikiLinksListItemProps) => {
 
   return (
     <Box>
-      <Box sx={{ display: 'flex' }}>
-        <IconButton onClick={() => setOpen(prev => !prev)}>
+      <ButtonBase
+        onClick={() => setOpen(prev => !prev)}
+        sx={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'flex-start',
+          textAlign: 'start',
+        }}
+      >
+        <Box sx={{ p: 1 }}>
           {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-        </IconButton>
+        </Box>
         <Typography variant="h6">
           {wiki.title}
         </Typography>
-      </Box>
+      </ButtonBase>
       {open &&
-        <Box sx={{ px: 2 }}>
+        <Box sx={{ pt: 1 }}>
           <Suspense fallback={<WikiDetailSkeleton />}>
             <WikiDetail id={wiki.id} />
           </Suspense>
