@@ -1,6 +1,7 @@
 package frontend
 
 import (
+	"context"
 	"embed"
 	"errors"
 	"io"
@@ -8,6 +9,8 @@ import (
 	"net/http"
 	"path"
 	"path/filepath"
+
+	"github.com/nesheep/wikilinks/responder"
 )
 
 //go:embed build/*
@@ -20,18 +23,20 @@ func NewHandler() *Handler {
 }
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	err := h.tryRead(r.URL.Path, w)
+	ctx := r.Context()
+
+	err := h.tryRead(ctx, r.URL.Path, w)
 	if err == nil {
 		return
 	}
 
-	err = h.tryRead("index.html", w)
+	err = h.tryRead(ctx, "index.html", w)
 	if err != nil {
-		panic(err)
+		responder.JSON(ctx, w, responder.NotFound, http.StatusNotFound)
 	}
 }
 
-func (h *Handler) tryRead(requestPath string, w http.ResponseWriter) error {
+func (h *Handler) tryRead(ctx context.Context, requestPath string, w http.ResponseWriter) error {
 	file, err := assets.Open(path.Join("build", requestPath))
 	if err != nil {
 		return err
