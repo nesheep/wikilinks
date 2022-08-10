@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/nesheep/wikilinks/config"
 	"github.com/nesheep/wikilinks/frontend"
+	"github.com/nesheep/wikilinks/wiki"
 )
 
 func NewRouter(cfg *config.Config) http.Handler {
@@ -26,8 +27,16 @@ func NewRouter(cfg *config.Config) http.Handler {
 		}))
 	}
 
-	fh := frontend.NewHandler()
+	ws := wiki.NewStore()
+	wh := wiki.NewHandler(ws)
+	r.Route("/api", func(ar chi.Router) {
+		ar.Route("/wikis", func(wr chi.Router) {
+			wr.Get("/", wh.GetLinks)
+			wr.Get("/{id}", wh.GetOne)
+		})
+	})
 
+	fh := frontend.NewHandler()
 	r.NotFound(fh.ServeHTTP)
 
 	return r
