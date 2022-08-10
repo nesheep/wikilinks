@@ -1,74 +1,26 @@
+import axios from 'axios';
+
 import { Wiki, WikiLinks } from "../types/wiki";
 
-const buildWikiUrl = (params: { [key: string]: string }): string => {
-  const u = new URL('https://ja.wikipedia.org/w/api.php');
-  params['action'] = 'query';
-  params['format'] = 'json';
-  params['origin'] = '*';
-  Object.keys(params).forEach(k => u.searchParams.set(k, params[k]));
-  return u.toString();
-};
+const ENV = process.env.REACT_APP_ENV || '';
+const API_URL = `${ENV === 'dev' ? 'http://localhost:18080' : window.location.origin}/api/wikis`;
 
 export const fetchWiki = async (id: string): Promise<Wiki> => {
-  const wiki: Wiki = { id, title: '' };
-
-  const url = buildWikiUrl({
-    prop: ['extracts', 'pageimages'].join('|'),
-    pageids: id,
-    exsentences: '10',
-    exintro: '1',
-    explaintext: '1',
-    piprop: 'original',
-  });
-
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-
-    const data = await res.json();
-    const page = data.query.pages[id];
-    if (page.title) wiki.title = page.title;
-    if (page.extract) wiki.extract = page.extract;
-    if (page.original) wiki.image = page.original.source;
+    const { data } = await axios.get<Wiki>(`${API_URL}/${encodeURIComponent(id)}`);
+    return data;
   } catch (error) {
-    if (error instanceof Error) console.error(error.message);
+    if (error instanceof Error) console.error(error.message)
+    return { id, title: '' };
   }
-
-  return wiki;
 };
 
 export const fetchWikiLinks = async (id: string): Promise<WikiLinks> => {
-  const titleContinue = id.split('||||');
-  const title = titleContinue[0];
-  const gplcontinue = titleContinue.length > 1 ? titleContinue[1] : '';
-
-  const wikiLinks: WikiLinks = { id, title, items: [] };
-
-  const url = buildWikiUrl({
-    titles: title,
-    generator: 'links',
-    gplnamespace: '0',
-    gpllimit: '25',
-    ...(gplcontinue ? { gplcontinue } : null),
-  });
-
   try {
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-
-    const data = await res.json();
-    if (!data.query) throw new Error(`no result "${title}"`);
-
-    const pages = data.query.pages;
-    Object.keys(pages).forEach(k => {
-      const page = pages[k];
-      if (Number(k) > 0) wikiLinks.items.push({ id: k, title: page.title });
-    });
-
-    if (data.continue) wikiLinks.next = data.continue.gplcontinue;
+    const { data } = await axios.get<WikiLinks>(`${API_URL}?id=${encodeURIComponent(id)}`);
+    return data;
   } catch (error) {
-    if (error instanceof Error) console.error(error.message);
+    if (error instanceof Error) console.error(error.message)
+    return { id, title: '', items: [] };
   }
-
-  return wikiLinks;
 };

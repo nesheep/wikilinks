@@ -32,7 +32,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	err = h.tryRead(ctx, "index.html", w)
 	if err != nil {
-		responder.JSON(ctx, w, responder.NotFound, http.StatusNotFound)
+		responder.NotFound(ctx, w)
 	}
 }
 

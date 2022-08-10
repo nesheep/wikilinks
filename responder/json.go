@@ -16,7 +16,7 @@ func JSON(ctx context.Context, w http.ResponseWriter, body any, status int) {
 		log.Printf("encode response error: %v", err)
 		w.WriteHeader(http.StatusInternalServerError)
 
-		rsp := Error{Message: http.StatusText(http.StatusInternalServerError)}
+		rsp := ErrorResponse{Message: http.StatusText(http.StatusInternalServerError)}
 		if err := json.NewEncoder(w).Encode(rsp); err != nil {
 			log.Printf("write error response error: %v", err)
 		}
