@@ -25,7 +25,7 @@ RUN go build -trimpath -ldflags "-w -s" -o app ./cmd/main.go
 
 # -------------------------------------------------
 
-FROM debian:bullseye AS production
+FROM ubuntu:20.04 AS production
 
 COPY --from=builder /app/app ./
 CMD ["./app"]
