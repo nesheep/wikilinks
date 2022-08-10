@@ -27,5 +27,7 @@ RUN go build -trimpath -ldflags "-w -s" -o app ./cmd/main.go
 
 FROM debian:bullseye-slim AS production
 
+RUN apt-get update && apt-get install -y --no-install-recommends ca-certificates
+
 COPY --from=builder /app/app ./
 CMD ["./app"]
