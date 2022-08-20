@@ -11,15 +11,15 @@ import (
 	"github.com/nesheep/wikilinks/wiki"
 )
 
-func NewRouter(cfg *config.Config) http.Handler {
-	r := chi.NewRouter()
+func NewMux(cfg *config.Config) http.Handler {
+	mux := chi.NewMux()
 
-	r.Use(middleware.Logger)
-	r.Use(middleware.Recoverer)
-	r.Use(middleware.URLFormat)
+	mux.Use(middleware.Logger)
+	mux.Use(middleware.Recoverer)
+	mux.Use(middleware.URLFormat)
 
 	if cfg.Env == "dev" {
-		r.Use(cors.Handler(cors.Options{
+		mux.Use(cors.Handler(cors.Options{
 			AllowedOrigins:   []string{"*"},
 			AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 			AllowedHeaders:   []string{"Accept", "Content-Type"},
@@ -27,18 +27,18 @@ func NewRouter(cfg *config.Config) http.Handler {
 		}))
 	}
 
-	r.Route("/api", func(ar chi.Router) {
-		ar.Route("/wikis", func(wr chi.Router) {
+	mux.Route("/api", func(ar chi.Router) {
+		ar.Route("/wikis", func(r chi.Router) {
 			st := wiki.NewStore()
 			sv := wiki.NewService(st)
 			h := wiki.NewHandler(sv)
-			wr.Get("/", h.GetLinks)
-			wr.Get("/{id}", h.GetOne)
+			r.Get("/", h.GetLinks)
+			r.Get("/{id}", h.GetOne)
 		})
 	})
 
 	fh := frontend.NewHandler()
-	r.NotFound(fh.ServeHTTP)
+	mux.NotFound(fh.ServeHTTP)
 
-	return r
+	return mux
 }
