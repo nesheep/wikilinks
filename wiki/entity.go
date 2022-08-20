@@ -2,15 +2,48 @@ package wiki
 
 // WikiLinks is the struct for a response of GetLinks request.
 type WikiLinks struct {
-	Id    string          `json:"id"`
-	Title string          `json:"title"`
-	Items []WikiLinksItem `json:"items"`
-	Next  string          `json:"next"`
+	Id    string           `json:"id"`
+	Title string           `json:"title"`
+	Items []*WikiLinksItem `json:"items"`
+	Next  string           `json:"next"`
+}
+
+func NewWikiLinks(id string, title string, items []*WikiLinksItem, next string) *WikiLinks {
+	return &WikiLinks{
+		Id:    id,
+		Title: title,
+		Items: items,
+		Next:  next,
+	}
 }
 
 type WikiLinksItem struct {
 	Id    string `json:"id"`
 	Title string `json:"title"`
+}
+
+func NewWikiLinksItem(id, title string) *WikiLinksItem {
+	return &WikiLinksItem{
+		Id:    id,
+		Title: title,
+	}
+}
+
+// Wiki is the struct for a response of GetOne request.
+type Wiki struct {
+	Id      string `json:"id"`
+	Title   string `json:"title"`
+	Extract string `json:"extract"`
+	Image   string `json:"image"`
+}
+
+func NewWiki(id, title, extract, image string) *Wiki {
+	return &Wiki{
+		Id:      id,
+		Title:   title,
+		Extract: extract,
+		Image:   image,
+	}
 }
 
 // WikiRaw is the struct for MediaWikiApi.
@@ -32,14 +65,6 @@ type WikiLinksRawPage struct {
 	Id      int     `json:"pageid"`
 	Title   string  `json:"title"`
 	Missing *string `json:"missing"`
-}
-
-// Wiki is the struct for a response of GetOne request.
-type Wiki struct {
-	Id      string `json:"id"`
-	Title   string `json:"title"`
-	Extract string `json:"extract"`
-	Image   string `json:"image"`
 }
 
 // WikiRaw is the struct for MediaWikiApi.
