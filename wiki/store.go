@@ -10,8 +10,6 @@ import (
 	"strings"
 )
 
-var endpoint = "https://ja.wikipedia.org/w/api.php"
-
 type store struct{}
 
 type Store interface {
@@ -31,22 +29,19 @@ func (s *store) GetLinks(ctx context.Context, id string) (*WikiLinks, error) {
 		cont = titleCont[1]
 	}
 
-	u, err := url.Parse(endpoint)
+	params := map[string]string{
+		"generator":    "links",
+		"gplnamespace": "0",
+		"gpllimit":     "25",
+		"titles":       title,
+	}
+	if cont != "" {
+		params["gplcontinue"] = cont
+	}
+	u, err := s.buildWikiURL(params)
 	if err != nil {
 		return nil, err
 	}
-
-	q := u.Query()
-	q.Set("action", "query")
-	q.Set("format", "json")
-	q.Set("generator", "links")
-	q.Set("gplnamespace", "0")
-	q.Set("gpllimit", "25")
-	q.Set("titles", title)
-	if cont != "" {
-		q.Set("gplcontinue", cont)
-	}
-	u.RawQuery = q.Encode()
 
 	resp, err := http.Get(u.String())
 	if err != nil {
@@ -59,42 +54,30 @@ func (s *store) GetLinks(ctx context.Context, id string) (*WikiLinks, error) {
 		return nil, err
 	}
 
-	items := []WikiLinksItem{}
+	items := []*WikiLinksItem{}
 	for _, v := range wikiLinksRaw.Query.Pages {
 		if v.Missing == nil {
-			items = append(items, WikiLinksItem{
-				Id:    strconv.FormatInt(int64(v.Id), 10),
-				Title: v.Title,
-			})
+			items = append(items, NewWikiLinksItem(strconv.Itoa(v.Id), v.Title))
 		}
 	}
 
-	wikilinks := &WikiLinks{
-		Id:    id,
-		Title: title,
-		Items: items,
-		Next:  wikiLinksRaw.Continue.Gplcontinue,
-	}
-
-	return wikilinks, nil
+	wikiLinks := NewWikiLinks(id, title, items, wikiLinksRaw.Continue.Gplcontinue)
+	return wikiLinks, nil
 }
 
 func (s *store) GetOne(ctx context.Context, id string) (*Wiki, error) {
-	u, err := url.Parse(endpoint)
+	params := map[string]string{
+		"prop":        "extracts|pageimages",
+		"exsentences": "10",
+		"exintro":     "1",
+		"explaintext": "1",
+		"piprop":      "original",
+		"pageids":     id,
+	}
+	u, err := s.buildWikiURL(params)
 	if err != nil {
 		return nil, err
 	}
-
-	q := u.Query()
-	q.Set("action", "query")
-	q.Set("format", "json")
-	q.Set("prop", "extracts|pageimages")
-	q.Set("exsentences", "10")
-	q.Set("exintro", "1")
-	q.Set("explaintext", "1")
-	q.Set("piprop", "original")
-	q.Set("pageids", id)
-	u.RawQuery = q.Encode()
 
 	resp, err := http.Get(u.String())
 	if err != nil {
@@ -112,12 +95,24 @@ func (s *store) GetOne(ctx context.Context, id string) (*Wiki, error) {
 		return nil, fmt.Errorf("failed to get: %s", id)
 	}
 
-	wiki := &Wiki{
-		Id:      strconv.FormatInt(int64(page.Id), 10),
-		Title:   page.Title,
-		Extract: page.Extract,
-		Image:   page.Image.Source,
+	wiki := NewWiki(strconv.Itoa(page.Id), page.Title, page.Extract, page.Image.Source)
+	return wiki, nil
+}
+
+func (s store) buildWikiURL(params map[string]string) (*url.URL, error) {
+	endpoint := "https://ja.wikipedia.org/w/api.php"
+	u, err := url.Parse(endpoint)
+	if err != nil {
+		return nil, err
 	}
 
-	return wiki, nil
+	q := u.Query()
+	q.Set("action", "query")
+	q.Set("format", "json")
+	for k, v := range params {
+		q.Set(k, v)
+	}
+	u.RawQuery = q.Encode()
+
+	return u, nil
 }
