@@ -3,32 +3,22 @@ package wiki
 import (
 	"context"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/url"
-	"strconv"
-	"strings"
 )
 
 type store struct{}
 
 type Store interface {
-	GetLinks(context.Context, string) (*WikiLinks, error)
-	GetOne(context.Context, string) (*Wiki, error)
+	GetLinks(ctx context.Context, title string, cont string) (*WikiLinksRaw, error)
+	GetOne(ctx context.Context, id string) (*WikiRaw, error)
 }
 
 func NewStore() Store {
 	return &store{}
 }
 
-func (s *store) GetLinks(ctx context.Context, id string) (*WikiLinks, error) {
-	titleCont := strings.Split(id, "||||")
-	title := titleCont[0]
-	var cont string
-	if len(titleCont) > 1 {
-		cont = titleCont[1]
-	}
-
+func (s *store) GetLinks(ctx context.Context, title string, cont string) (*WikiLinksRaw, error) {
 	params := map[string]string{
 		"generator":    "links",
 		"gplnamespace": "0",
@@ -54,18 +44,10 @@ func (s *store) GetLinks(ctx context.Context, id string) (*WikiLinks, error) {
 		return nil, err
 	}
 
-	items := []*WikiLinksItem{}
-	for _, v := range wikiLinksRaw.Query.Pages {
-		if v.Missing == nil {
-			items = append(items, NewWikiLinksItem(strconv.Itoa(v.Id), v.Title))
-		}
-	}
-
-	wikiLinks := NewWikiLinks(id, title, items, wikiLinksRaw.Continue.Gplcontinue)
-	return wikiLinks, nil
+	return &wikiLinksRaw, nil
 }
 
-func (s *store) GetOne(ctx context.Context, id string) (*Wiki, error) {
+func (s *store) GetOne(ctx context.Context, id string) (*WikiRaw, error) {
 	params := map[string]string{
 		"prop":        "extracts|pageimages",
 		"exsentences": "10",
@@ -90,13 +72,7 @@ func (s *store) GetOne(ctx context.Context, id string) (*Wiki, error) {
 		return nil, err
 	}
 
-	page, ok := wikiRaw.Query.Pages[id]
-	if !ok {
-		return nil, fmt.Errorf("failed to get: %s", id)
-	}
-
-	wiki := NewWiki(strconv.Itoa(page.Id), page.Title, page.Extract, page.Image.Source)
-	return wiki, nil
+	return &wikiRaw, nil
 }
 
 func (s store) buildWikiURL(params map[string]string) (*url.URL, error) {

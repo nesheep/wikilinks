@@ -27,12 +27,13 @@ func NewRouter(cfg *config.Config) http.Handler {
 		}))
 	}
 
-	ws := wiki.NewStore()
-	wh := wiki.NewHandler(ws)
 	r.Route("/api", func(ar chi.Router) {
 		ar.Route("/wikis", func(wr chi.Router) {
-			wr.Get("/", wh.GetLinks)
-			wr.Get("/{id}", wh.GetOne)
+			st := wiki.NewStore()
+			sv := wiki.NewService(st)
+			h := wiki.NewHandler(sv)
+			wr.Get("/", h.GetLinks)
+			wr.Get("/{id}", h.GetOne)
 		})
 	})
 

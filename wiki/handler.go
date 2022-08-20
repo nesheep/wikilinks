@@ -9,11 +9,11 @@ import (
 )
 
 type Handler struct {
-	store Store
+	service Service
 }
 
-func NewHandler(store Store) *Handler {
-	return &Handler{store: store}
+func NewHandler(service Service) *Handler {
+	return &Handler{service: service}
 }
 
 func (h *Handler) GetLinks(w http.ResponseWriter, r *http.Request) {
@@ -25,7 +25,7 @@ func (h *Handler) GetLinks(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	wikiLinks, err := h.store.GetLinks(ctx, id)
+	wikiLinks, err := h.service.GetLinks(ctx, id)
 	if err != nil {
 		log.Println(err)
 		responder.InternalServerError(ctx, w)
@@ -44,7 +44,7 @@ func (h *Handler) GetOne(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	wiki, err := h.store.GetOne(ctx, id)
+	wiki, err := h.service.GetOne(ctx, id)
 	if err != nil {
 		log.Println(err)
 		responder.InternalServerError(ctx, w)
