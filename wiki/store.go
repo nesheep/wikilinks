@@ -25,6 +25,7 @@ func (s *store) GetLinks(ctx context.Context, title string, cont string) (*WikiL
 		"generator":    "links",
 		"gplnamespace": "0",
 		"gpllimit":     "25",
+		"redirects":    "1",
 		"titles":       title,
 	}
 	if cont != "" {
@@ -52,8 +53,7 @@ func (s *store) GetLinks(ctx context.Context, title string, cont string) (*WikiL
 func (s *store) GetOne(ctx context.Context, id string) (*WikiRaw, error) {
 	params := map[string]string{
 		"prop":        "extracts|pageimages",
-		"exsentences": "10",
-		"exintro":     "1",
+		"exchars":     "400",
 		"explaintext": "1",
 		"piprop":      "original",
 		"pageids":     id,
