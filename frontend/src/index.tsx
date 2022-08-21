@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from "react-router-dom";
 import { RecoilRoot } from 'recoil';
 import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
@@ -15,9 +16,11 @@ root.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline enableColorScheme />
-      <RecoilRoot>
-        <App />
-      </RecoilRoot>
+      <BrowserRouter>
+        <RecoilRoot>
+          <App />
+        </RecoilRoot>
+      </BrowserRouter>
     </ThemeProvider>
   </React.StrictMode>
 );

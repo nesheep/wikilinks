@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
@@ -8,15 +9,17 @@ import WikiLinkButton from './WikiLinkButton';
 import useSearch from '../hooks/useSearch';
 
 const SearchBar = () => {
+  const navigate = useNavigate();
+  const { title } = useParams();
   const [word, setWord] = useState('');
   const [composition, setComposition] = useState(false);
   const search = useSearch();
 
   useEffect(() => {
-    const firstWord = 'トマト';
+    const firstWord = title || 'トマト';
     setWord(firstWord);
     search(firstWord);
-  }, [search]);
+  }, [search, title]);
 
   return (
     <Box sx={{
@@ -32,14 +35,14 @@ const SearchBar = () => {
       display: 'flex',
       alignItems: 'center',
     }}>
-      <IconButton onClick={() => search(word)}>
+      <IconButton onClick={() => navigate(`/${encodeURIComponent(word)}`)}>
         <SearchIcon />
       </IconButton>
       <InputBase
         placeholder="検索"
         value={word}
         onChange={e => setWord(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && !composition && search(word)}
+        onKeyDown={e => e.key === 'Enter' && !composition && navigate(`/${encodeURIComponent(word)}`)}
         onCompositionStart={() => setComposition(true)}
         onCompositionEnd={() => setComposition(false)}
         sx={{ flex: 1 }}

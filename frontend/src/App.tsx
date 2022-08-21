@@ -1,19 +1,12 @@
-import Box from '@mui/material/Box';
+import { Route, Routes } from 'react-router-dom';
 
-import SearchBar from './components/SearchBar';
-import WikiLinksList from './components/WikiLinksList';
+import Home from './pages/Home';
 
 const App = () => (
-  <Box>
-    <SearchBar />
-    <Box sx={{
-      pt: 7,
-      pb: 2,
-      px: 1,
-    }}>
-      <WikiLinksList />
-    </Box>
-  </Box>
+  <Routes>
+    <Route path="/" element={<Home />} />
+    <Route path="/:title" element={<Home />} />
+  </Routes>
 );
 
 export default App;
