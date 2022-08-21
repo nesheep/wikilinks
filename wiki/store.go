@@ -7,15 +7,17 @@ import (
 	"net/url"
 )
 
-type store struct{}
+type store struct {
+	cli *http.Client
+}
 
 type Store interface {
 	GetLinks(ctx context.Context, title string, cont string) (*WikiLinksRaw, error)
 	GetOne(ctx context.Context, id string) (*WikiRaw, error)
 }
 
-func NewStore() Store {
-	return &store{}
+func NewStore(cli *http.Client) Store {
+	return &store{cli: cli}
 }
 
 func (s *store) GetLinks(ctx context.Context, title string, cont string) (*WikiLinksRaw, error) {
@@ -28,12 +30,12 @@ func (s *store) GetLinks(ctx context.Context, title string, cont string) (*WikiL
 	if cont != "" {
 		params["gplcontinue"] = cont
 	}
-	u, err := s.buildWikiURL(params)
+	req, err := s.newGetRequest(ctx, params)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := http.Get(u.String())
+	resp, err := s.cli.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -56,12 +58,12 @@ func (s *store) GetOne(ctx context.Context, id string) (*WikiRaw, error) {
 		"piprop":      "original",
 		"pageids":     id,
 	}
-	u, err := s.buildWikiURL(params)
+	req, err := s.newGetRequest(ctx, params)
 	if err != nil {
 		return nil, err
 	}
 
-	resp, err := http.Get(u.String())
+	resp, err := s.cli.Do(req)
 	if err != nil {
 		return nil, err
 	}
@@ -73,6 +75,18 @@ func (s *store) GetOne(ctx context.Context, id string) (*WikiRaw, error) {
 	}
 
 	return &wikiRaw, nil
+}
+
+func (s store) newGetRequest(ctx context.Context, params map[string]string) (*http.Request, error) {
+	u, err := s.buildWikiURL(params)
+	if err != nil {
+		return nil, err
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, u.String(), nil)
+	if err != nil {
+		return nil, err
+	}
+	return req, nil
 }
 
 func (s store) buildWikiURL(params map[string]string) (*url.URL, error) {

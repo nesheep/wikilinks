@@ -8,6 +8,7 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/nesheep/wikilinks/config"
 	"github.com/nesheep/wikilinks/frontend"
+	"github.com/nesheep/wikilinks/infra/client"
 	"github.com/nesheep/wikilinks/wiki"
 )
 
@@ -29,7 +30,8 @@ func NewMux(cfg *config.Config) http.Handler {
 
 	mux.Route("/api", func(ar chi.Router) {
 		ar.Route("/wikis", func(r chi.Router) {
-			st := wiki.NewStore()
+			cli := client.NewClient()
+			st := wiki.NewStore(cli)
 			sv := wiki.NewService(st)
 			h := wiki.NewHandler(sv)
 			r.Get("/", h.GetLinks)
