@@ -15,3 +15,5 @@
 # vendor/
 
 tmp/
+cmd/lambda/lambda
+cmd/lambda/lambda.zip
