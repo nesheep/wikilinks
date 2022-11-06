@@ -2,6 +2,6 @@
 
 Wikipedia のリンクを辿っていく web アプリ。
 
-
 ## DEMO
-[http://go-wikilinks.herokuapp.com/](http://go-wikilinks.herokuapp.com/)
+
+[https://gln20mnzoi.execute-api.ap-northeast-1.amazonaws.com/](https://gln20mnzoi.execute-api.ap-northeast-1.amazonaws.com/)

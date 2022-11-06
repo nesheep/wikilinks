@@ -3,6 +3,8 @@ module github.com/nesheep/wikilinks
 go 1.19
 
 require (
+	github.com/aws/aws-lambda-go v1.34.1
+	github.com/awslabs/aws-lambda-go-api-proxy v0.13.3
 	github.com/caarlos0/env/v6 v6.9.3
 	github.com/go-chi/chi/v5 v5.0.7
 	github.com/go-chi/cors v1.2.1
