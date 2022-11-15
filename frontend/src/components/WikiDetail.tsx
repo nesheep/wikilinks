@@ -18,10 +18,12 @@ const WikiDetail = ({ id }: WikiDetailProps) => {
 
   return (
     <Stack spacing={1}>
-      <Box sx={{
-        display: 'flex',
-        alignItems: 'flex-start',
-      }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'flex-start',
+        }}
+      >
         <Box sx={{ flex: 1 }}>
           {wiki.image ? (
             <img
@@ -30,15 +32,17 @@ const WikiDetail = ({ id }: WikiDetailProps) => {
               style={{ height: 100 }}
             />
           ) : (
-            <Box sx={{
-              width: 100,
-              height: 100,
-              color: 'grey.400',
-              bgcolor: 'grey.200',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+            <Box
+              sx={{
+                width: 100,
+                height: 100,
+                color: 'grey.400',
+                bgcolor: 'grey.200',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
               <HideImageIcon />
             </Box>
           )}
@@ -47,11 +51,7 @@ const WikiDetail = ({ id }: WikiDetailProps) => {
           <SearchIcon />
         </IconButton>
       </Box>
-      {wiki.extract &&
-        <Typography>
-          {wiki.extract}
-        </Typography>
-      }
+      {wiki.extract && <Typography>{wiki.extract}</Typography>}
     </Stack>
   );
 };

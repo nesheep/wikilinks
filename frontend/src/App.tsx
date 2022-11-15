@@ -4,8 +4,14 @@ import Home from './pages/Home';
 
 const App = () => (
   <Routes>
-    <Route path="/" element={<Home />} />
-    <Route path="/:title" element={<Home />} />
+    <Route
+      path="/"
+      element={<Home />}
+    />
+    <Route
+      path="/:title"
+      element={<Home />}
+    />
   </Routes>
 );
 

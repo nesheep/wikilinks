@@ -14,7 +14,7 @@ const ShowMoreButton = ({ id }: ShowMoreButtonProps) => {
   return (
     <Button
       variant="outlined"
-      color='inherit'
+      color="inherit"
       onClick={() => addBrowsingWlIds(wikiLinks)}
       sx={wikiLinks.next ? null : { display: 'none' }}
     >

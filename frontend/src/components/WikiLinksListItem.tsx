@@ -19,12 +19,14 @@ const WikiLinksListItem = ({ wiki }: WikiLinksListItemProps) => {
 
   return (
     <Box sx={{ borderBottom: '1px solid rgba(0, 0, 0, 0.1)' }}>
-      <Box sx={{
-        width: '100%',
-        display: 'flex',
-      }}>
+      <Box
+        sx={{
+          width: '100%',
+          display: 'flex',
+        }}
+      >
         <ButtonBase
-          onClick={() => setOpen(prev => !prev)}
+          onClick={() => setOpen((prev) => !prev)}
           sx={{
             pt: 0.5,
             flex: 1,
@@ -32,26 +34,24 @@ const WikiLinksListItem = ({ wiki }: WikiLinksListItemProps) => {
             textAlign: 'start',
           }}
         >
-          <Box sx={{ p: 1 }}>
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </Box>
-          <Typography variant="h6">
-            {wiki.title}
-          </Typography>
+          <Box sx={{ p: 1 }}>{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</Box>
+          <Typography variant="h6">{wiki.title}</Typography>
         </ButtonBase>
         <WikiLinkButton title={wiki.title} />
       </Box>
-      {open &&
-        <Box sx={{
-          px: 1,
-          pt: 1,
-          pb: 1.5,
-        }}>
+      {open && (
+        <Box
+          sx={{
+            px: 1,
+            pt: 1,
+            pb: 1.5,
+          }}
+        >
           <Suspense fallback={<WikiDetailSkeleton />}>
             <WikiDetail id={wiki.id} />
           </Suspense>
         </Box>
-      }
+      )}
     </Box>
   );
 };
