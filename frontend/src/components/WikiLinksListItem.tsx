@@ -1,9 +1,12 @@
 import { Suspense, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import ButtonBase from '@mui/material/ButtonBase';
+import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import SearchIcon from '@mui/icons-material/Search';
 
 import WikiDetail from './WikiDetail';
 import WikiDetailSkeleton from './WikiDetailSkeleton';
@@ -15,6 +18,7 @@ export type WikiLinksListItemProps = {
 };
 
 const WikiLinksListItem = ({ wiki }: WikiLinksListItemProps) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
 
   return (
@@ -37,6 +41,9 @@ const WikiLinksListItem = ({ wiki }: WikiLinksListItemProps) => {
           <Box sx={{ p: 1 }}>{open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}</Box>
           <Typography variant="h6">{wiki.title}</Typography>
         </ButtonBase>
+        <IconButton onClick={() => navigate(`/${wiki.title}`)}>
+          <SearchIcon />
+        </IconButton>
         <WikiLinkButton title={wiki.title} />
       </Box>
       {open && (

@@ -1,10 +1,7 @@
-import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import HideImageIcon from '@mui/icons-material/HideImage';
-import SearchIcon from '@mui/icons-material/Search';
 
 import useWiki from '../hooks/useWiki';
 
@@ -13,7 +10,6 @@ export type WikiDetailProps = {
 };
 
 const WikiDetail = ({ id }: WikiDetailProps) => {
-  const navigate = useNavigate();
   const wiki = useWiki(id);
 
   return (
@@ -47,9 +43,6 @@ const WikiDetail = ({ id }: WikiDetailProps) => {
             </Box>
           )}
         </Box>
-        <IconButton onClick={() => navigate(`/${wiki.title}`)}>
-          <SearchIcon />
-        </IconButton>
       </Box>
       {wiki.extract && <Typography>{wiki.extract}</Typography>}
     </Stack>
