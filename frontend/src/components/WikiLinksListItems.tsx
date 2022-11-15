@@ -14,7 +14,7 @@ const WikiLinksListItems = ({ id }: WikiLinksListItemsProps) => {
 
   return wikiLinks.items.length ? (
     <Stack>
-      {wikiLinks.items.map(wiki => (
+      {wikiLinks.items.map((wiki) => (
         <WikiLinksListItem
           key={wiki.id}
           wiki={wiki}
@@ -23,9 +23,7 @@ const WikiLinksListItems = ({ id }: WikiLinksListItemsProps) => {
     </Stack>
   ) : (
     <Box sx={{ textAlign: 'center' }}>
-      <Typography>
-        一致するページは見つかりませんでした。
-      </Typography>
+      <Typography>一致するページは見つかりませんでした。</Typography>
     </Box>
   );
 };

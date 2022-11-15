@@ -14,20 +14,23 @@ const WikiLinksList = () => {
       {browsingWlIds.map((id, i) => (
         <Suspense
           key={i}
-          fallback={<WikiLinksListItemsSkeleton />}>
+          fallback={<WikiLinksListItemsSkeleton />}
+        >
           <WikiLinksListItems id={id} />
         </Suspense>
       ))}
-      {Boolean(browsingWlIds.length) &&
+      {Boolean(browsingWlIds.length) && (
         <Suspense>
-          <Box sx={{
-            mt: 2,
-            textAlign: 'center',
-          }}>
+          <Box
+            sx={{
+              mt: 2,
+              textAlign: 'center',
+            }}
+          >
             <ShowMoreButton id={browsingWlIds[browsingWlIds.length - 1]} />
           </Box>
         </Suspense>
-      }
+      )}
     </Box>
   );
 };

@@ -22,34 +22,36 @@ const SearchBar = () => {
   }, [search, title]);
 
   return (
-    <Box sx={{
-      py: 0.5,
-      px: 1,
-      position: 'fixed',
-      top: 0,
-      right: 0,
-      left: 0,
-      zIndex: 1000,
-      bgcolor: 'common.white',
-      borderBottom: '1px solid rgba(0, 0, 0, 0.23)',
-      display: 'flex',
-      alignItems: 'center',
-    }}>
+    <Box
+      sx={{
+        py: 0.5,
+        px: 1,
+        position: 'fixed',
+        top: 0,
+        right: 0,
+        left: 0,
+        zIndex: 1000,
+        bgcolor: 'common.white',
+        borderBottom: '1px solid rgba(0, 0, 0, 0.23)',
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
       <IconButton onClick={() => navigate(`/${encodeURIComponent(word)}`)}>
         <SearchIcon />
       </IconButton>
       <InputBase
         placeholder="検索"
         value={word}
-        onChange={e => setWord(e.target.value)}
-        onKeyDown={e => e.key === 'Enter' && !composition && navigate(`/${encodeURIComponent(word)}`)}
+        onChange={(e) => setWord(e.target.value)}
+        onKeyDown={(e) => e.key === 'Enter' && !composition && navigate(`/${encodeURIComponent(word)}`)}
         onCompositionStart={() => setComposition(true)}
         onCompositionEnd={() => setComposition(false)}
         sx={{ flex: 1 }}
       />
       <WikiLinkButton title={word} />
     </Box>
-  )
+  );
 };
 
 export default SearchBar;

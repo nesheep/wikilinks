@@ -6,11 +6,13 @@ import WikiLinksList from '../components/WikiLinksList';
 const Home = () => (
   <Box>
     <SearchBar />
-    <Box sx={{
-      pt: 7,
-      pb: 2,
-      px: 1,
-    }}>
+    <Box
+      sx={{
+        pt: 7,
+        pb: 2,
+        px: 1,
+      }}
+    >
       <WikiLinksList />
     </Box>
   </Box>
