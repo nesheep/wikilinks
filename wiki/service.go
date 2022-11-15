@@ -16,7 +16,7 @@ type Service interface {
 	GetOne(ctx context.Context, id string) (*Wiki, error)
 }
 
-func NewService(store Store) Service {
+func NewService(store Store) *service {
 	return &service{store: store}
 }
 

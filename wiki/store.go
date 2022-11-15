@@ -16,7 +16,7 @@ type Store interface {
 	GetOne(ctx context.Context, id string) (*WikiRaw, error)
 }
 
-func NewStore(cli *http.Client) Store {
+func NewStore(cli *http.Client) *store {
 	return &store{cli: cli}
 }
 
